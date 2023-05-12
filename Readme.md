@@ -2,13 +2,17 @@
 
 ## Table of Contents
 
-- [Project Description](#Project Description)
+- [Project Description](#Project_Description)
 - [Features](#Features)
 - [Installation](#Installation)
 
 # Project Description
 
-Icarus is a simulation platform that combines state-of-the-art mesoscale travel simulations and fine-scale microclimate data to create a comprehensive modeling tool for urban environments.
+Icarus is a simulation platform that combines state-of-the-art mesoscale travel simulations and fine-scale microclimate 
+data to create a comprehensive modeling tool for urban dwellers' heat exposure assessment.
+
+Icarus has been used in estimating urban residents' travel and activity heat exposure <a href="https://www.sciencedirect.com/science/article/pii/S1361920922003741"> (Li et al., 2023a)</a>
+and heat mitigation benefits for travelers when change the build environment and people's travel behaviour <a href="https://www.frontiersin.org/articles/10.3389/frsc.2023.1129388/full"> (Li et al., 2023b)</a>.
 
 ## Features
 
