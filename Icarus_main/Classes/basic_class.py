@@ -1,11 +1,8 @@
 from __future__ import annotations
-from dataclasses import dataclass, field, asdict
 import dataclasses
 from typing import List
-
-from typing import Iterable
 from enum import Enum
-from abc import ABC, abstractmethod
+from abc import ABC
 
 
 class TravelMode(Enum):
@@ -15,9 +12,10 @@ class TravelMode(Enum):
     CAR = 4
 
 
-@dataclass
+@dataclasses.dataclass
 class IcarusObj(ABC):
     # all IcarusObj need primary keys that would be used in database
+    #__primary_key__: str = dataclasses.field(default='')
 
     def database_fields(self) -> str:
         """
@@ -27,11 +25,11 @@ class IcarusObj(ABC):
         return ', '.join([_field.name for _field in dataclasses.fields(self)])
 
 
-@dataclass
+@dataclasses.dataclass
 class IcarusObjs(ABC):
     # all IcarusObj need primary keys that would be used in database
-    primary_keys: str = field(default=None)
-    objects: {} = field(default=None)
+    primary_keys: str = dataclasses.field(default=None)
+    objects: {} = dataclasses.field(default=None)
 
     def database_fields(self) -> str:
         """

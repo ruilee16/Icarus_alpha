@@ -1,9 +1,9 @@
-from Icarus_main.Classes.OSM_network_class import Network, Link, OSMHandler, osm_Way, osm_Node
+from Icarus_main.Classes.OSM_network_class import OSM_Network, Link, OSMHandler, osm_Way, osm_Node
 from typing import List, Optional, Tuple, Dict, Any
 from shapely.geometry import Point, LineString, Polygon, MultiPolygon
 
 
-def net_simplify(OG_network: Network) -> Network:
+def net_simplify(OG_network: OSM_Network) -> OSM_Network:
     """
     simplify the network and remove all nodes with only 2 degrees
     :return:
@@ -14,7 +14,7 @@ def net_simplify(OG_network: Network) -> Network:
     [_simplified_edges.update(build_simplified_edges(_graph, [_, n])) for _ in non_two_degree_nodes for n in
      _graph.neighbors(_)]
     # construct new network
-    _network = Network(links={}, nodes={})
+    _network = OSM_Network(links={}, nodes={})
     [_network.links.update(
         {_: Link(node1=_[0],
                  node2=_[1],
@@ -52,7 +52,7 @@ def _get_link_list(route: list) -> list:
     return [tuple(sorted(i)) for i in link_list]
 
 
-def _get_individual_link(way: osm_Way, osm_obj: OSMHandler, net: Network) -> None:
+def _get_individual_link(way: osm_Way, osm_obj: OSMHandler, net: OSM_Network) -> None:
     """
     An edge directly exported from OSM would have multiple points, and
     :param way:
@@ -73,10 +73,10 @@ def _get_individual_link(way: osm_Way, osm_obj: OSMHandler, net: Network) -> Non
         pass
 
 
-def get_network(osm_obj: OSMHandler) -> Network:
+def get_network(osm_obj: OSMHandler) -> OSM_Network:
     if not osm_obj.cleaned:
         osm_obj.cleanup()
-    _network = Network(links={}, nodes={})
+    _network = OSM_Network(links={}, nodes={})
     [_get_individual_link(_, osm_obj, _network)
      for _ in osm_obj.osm_way_dict.values()]
     _network.nodes.update(osm_obj.osm_node_dict)

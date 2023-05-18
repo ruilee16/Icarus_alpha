@@ -1,10 +1,10 @@
 import dataclasses
 from typing import List, Optional, Dict
-import geopandas as gpd
-import networkx as nx
 import osmium as osm
-import pandas as pd
-from shapely.geometry import Point, LineString, Polygon, MultiPolygon
+from shapely.geometry import Point, LineString
+from Icarus_main.Classes.basic_class import IcarusObj
+from Icarus_main.Classes.network_class import Network, Link
+
 
 """
 creater: Rui Li
@@ -41,7 +41,7 @@ class osm_Way:
 
 # define Node class to hold the node data record from .osm file
 @dataclasses.dataclass
-class osm_Node:
+class osm_Node(IcarusObj):
     """
     create node object
     :param osm_id: openstreetmap node id
@@ -52,13 +52,13 @@ class osm_Node:
         node1 = Node(osm_id = 1, Point(33.123, -111.225), crs=2656)
         node2 = Node(osm_id = 2, Point(32.123, -112.225), crs=2656)
     """
-    osm_id: int
-    geometry: Point
+    osm_id: int = dataclasses.field(default=None)
+    geometry: Point = dataclasses.field(default=None)
     crs: int = dataclasses.field(default=4326)
 
 
 @dataclasses.dataclass
-class Link:
+class osm_Link(Link):
     """
     create Link object.
     *** NOTICE ****
@@ -66,21 +66,14 @@ class Link:
     example:
         link = Link(node_list = (1, 2), geometry)
     """
-    node1: Optional[
-        int] = None  # A tuple of two integers representing the OpenStreetMap node ids that the link connects.
-    node2: Optional[int] = None
     geometry: Optional[LineString] = None  # An optional LineString object representing the geometry of the link.
-    length: Optional[float] = None  # An optional float representing the length of the link in meters.
-    osm_id: Optional[int] = None  # An optional integer representing the OpenStreetMap id of the link.
     highway: Optional[str] = None  # An optional string representing the type of road that the link belongs to.
-    daymet_id: Optional[int] = None  # An optional integer representing the Daymet id of the link.
-    mrt_id: Optional[int] = None  # An optional integer representing the MRT id of the link.
 
 
 @dataclasses.dataclass
-class OSM_Network:
-    links: Dict[str, Link]
-    nodes: Dict[str, osm_Node]
+class OSM_Network(Network):
+    links: Dict[str, osm_Link] = dataclasses.field(default=None)
+    nodes: Dict[str, osm_Node] = dataclasses.field(default=None)
     crs: int = dataclasses.field(default=4326)
     simplified: bool = dataclasses.field(default=False)
 
@@ -133,7 +126,7 @@ class OSMHandler(osm.SimpleHandler):
         """
         if not self.cleaned:
             self.cleanup()
-        _links = {_: Link(node1=self.osm_way_dict[_].ref_node_id_list[0],
+        _links = {_: osm_Link(node1=self.osm_way_dict[_].ref_node_id_list[0],
                           node2=self.osm_way_dict[_].ref_node_id_list[-1],
                           geometry=
                           LineString(self.osm_node_dict[i].geometry for i in

@@ -1,4 +1,4 @@
-from Icarus_main.Classes.basic_class import IcarusObj, IcarusObjs
+from Icarus_main.Classes.basic_class import IcarusObj
 from typing import Dict
 import dataclasses
 
@@ -7,20 +7,11 @@ import dataclasses
 class MRT(IcarusObj):
     mrt_id: int = dataclasses.field(default=None)
     mrt_temp: Dict[int: float] = dataclasses.field(default=None)
-
-
-@dataclasses.dataclass
-class MRTs(IcarusObjs):
-    primary_keys: str = dataclasses.field(default='mrt_id', init=False)
-    objects: {} = dataclasses.field(default=None, init=False)
+    __primary_key__ = 'link_id'
 
 
 @dataclasses.dataclass
 class Daymet(IcarusObj):
     daymet_id: int = dataclasses.field(default=None)
     daymet_temp: Dict[int: float] = dataclasses.field(default=None)
-
-
-@dataclasses.dataclass
-class Daymets(IcarusObjs):
-    primary_keys: str = dataclasses.field(default='daymet_id', init=False)
+    __primary_key__ = 'daymet_id'

@@ -1,9 +1,10 @@
 import networkx as nx
 import pandas as pd
 import geopandas as gpd
-from Icarus_main.Classes.OSM_network_class import OSM_Network, Link, OSMHandler, osm_Way
+from Icarus_main.Classes.network_class import Network, Link
 from typing import List, Tuple, Dict, Any
-from shapely.geometry import Point, LineString, Polygon, MultiPolygon
+from shapely.geometry import LineString
+import os
 
 
 def net_to_nx(network_obj):
@@ -23,7 +24,24 @@ def net_to_shp(network_obj, url: str):
         gdf.to_file(url, driver='ESRI Shapefile')
 
 
-def net_simplify(OG_network: OSM_Network) -> OSM_Network:
+def net_to_database(network_obj, url: str): #working
+    #check if database exist:
+    #check if nodes table exist
+    #check if links table exist
+    if bool(network_obj.links):
+        temp = pd.DataFrame(network_obj.links.values())
+        gdf = gpd.GeoDataFrame(temp, geometry='geometry', crs='epsg:%s' % network_obj.crs)
+        gdf.to_file(url, driver='ESRI Shapefile')
+
+
+def net_to_csv(network_obj, folder_path: str):#working
+    if os.path.exists(folder_path) and os.path.isdir(folder_path):
+        pass
+    else:
+        print(f"The folder '{folder_path}' does not exist.")
+
+
+def osm_net_simplify(OG_network: Network) -> Network:
     """
     simplify the network and remove all nodes with only 2 degrees
     :return:
@@ -31,10 +49,10 @@ def net_simplify(OG_network: OSM_Network) -> OSM_Network:
     _graph = net_to_nx(OG_network) # get the network graph
     non_two_degree_nodes = [n for n, d in _graph.degree if d != 2] # find all nodes only has two degrees
     _simplified_edges = {}
-    [_simplified_edges.update(build_simplified_edges(_graph, [_, n])) for _ in non_two_degree_nodes for n in
+    [_simplified_edges.update(_build_simplified_edges(_graph, [_, n])) for _ in non_two_degree_nodes for n in
      _graph.neighbors(_)]
     # construct new network
-    _network = OSM_Network(links={}, nodes={})
+    _network = Network(links={}, nodes={})
     [_network.links.update(
         {_: Link(node1=_[0],
                  node2=_[1],
@@ -42,10 +60,11 @@ def net_simplify(OG_network: OSM_Network) -> OSM_Network:
                  )})
         for _ in _simplified_edges]
     _network.nodes = {i: OG_network.nodes[i] for i in non_two_degree_nodes}
+    _network.simplified = True
     return _network
 
 
-def build_simplified_edges(net_graph, st_node_list: List) -> Dict[Tuple[Any, ...], list]:
+def _build_simplified_edges(net_graph, st_node_list: List) -> Dict[Tuple[Any, ...], list]:
     """
     build edges
     """
@@ -53,7 +72,7 @@ def build_simplified_edges(net_graph, st_node_list: List) -> Dict[Tuple[Any, ...
         new_neighbor_node = [_ for _ in net_graph.neighbors(st_node_list[-1]) if _ not in st_node_list]
         if len(new_neighbor_node) > 0:
             st_node_list.append(new_neighbor_node[0])
-            return build_simplified_edges(net_graph, st_node_list)
+            return _build_simplified_edges(net_graph, st_node_list)
         else:
             _index = sorted([st_node_list[0], st_node_list[-1]])
             return {tuple(_index): st_node_list}
