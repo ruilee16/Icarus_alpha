@@ -24,20 +24,15 @@ and heat mitigation benefits for travelers when change the build environment and
 
 ## Getting Started
 
-### Installation
+### Installation [working]
 
 To get started with Icarus, follow these steps:
 
 1. Clone the Icarus repository:
 
-   ```bash
-   $ git clone https://github.com/ruilee16/Icarus_RL.git
-   $ cd Icarus_RL
+
 
 2. Install the required dependencies:
-
-   ```bash
-   $ pip install -r requirements.txt
 
 
    
