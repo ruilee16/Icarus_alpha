@@ -12,10 +12,36 @@ class TravelMode(Enum):
     CAR = 4
 
 
+class ActivityType(Enum):
+    Home = 0
+    Workplace = 1
+    University = 2
+    School = 3
+    Escorting = 4
+    School_escort = 41
+    Pure_escort_as_main_purpose_of_the_tour = 411
+    Ridesharing_stops_on_commuting_tours = 412
+    Other_escort_not_by_same_household_members = 42
+    Shopping = 5
+    Other_maintenance = 6
+    Eating_out = 7
+    Breakfast = 71
+    Lunch = 72
+    Dinner = 73
+    Visiting_relatives_or_friends = 8
+    Other_discretionary = 9
+    At_work = 11
+    At_work_business = 12
+    At_work_lunch = 13
+    At_work_other = 14
+    Work_related_business = 15
+    ASU_related_trip_to_ASU_MAZs = 16
+
+
 @dataclasses.dataclass
 class IcarusObj(ABC):
     # all IcarusObj need primary keys that would be used in database
-    #__primary_key__: str = dataclasses.field(default='')
+    # __primary_key__: str = dataclasses.field(default='')
 
     def database_fields(self) -> str:
         """
@@ -43,5 +69,3 @@ class IcarusObjs(ABC):
         else:
             _fields = self.objects[0].database_fields()
             return f"{_fields}, PRIMARY KEY ({self.primary_keys})"
-
-

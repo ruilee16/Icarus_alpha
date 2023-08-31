@@ -1,10 +1,13 @@
+from typing import List, Dict, Tuple, Any
+
 import networkx as nx
 import pandas as pd
 import geopandas as gpd
-from Icarus_main.Classes.network_class import Network, Link
-from typing import List, Tuple, Dict, Any
+from shapely import geometry
 from shapely.geometry import LineString
 import os
+from Icarus_main.Classes.network_class import Network, Link
+from Icarus_main.Classes.OSM_network_class import OSM_Network
 
 
 def net_to_nx(network_obj):
@@ -36,12 +39,26 @@ def net_to_database(network_obj, url: str): #working
 
 def net_to_csv(network_obj, folder_path: str):#working
     if os.path.exists(folder_path) and os.path.isdir(folder_path):
-        pass
+        pd.DataFrame(network_obj.nodes.values()).to_csv(f"{folder_path}\\nodes.csv", index=False)
+        pd.DataFrame(network_obj.links.values()).to_csv(f"{folder_path}\\links.csv", index=False)
     else:
         print(f"The folder '{folder_path}' does not exist.")
 
 
-def osm_net_simplify(OG_network: Network) -> Network:
+def osm_net(OG_network: OSM_Network) -> Network:
+    """
+    return a network
+    :return:
+    """
+    _network = Network(links={}, nodes={})
+    [_network.links.update({_: Link(node1=OG_network.links[_].node1,
+                                    node2=OG_network.links[_].node2,
+                                    geometry=OG_network.links[_].geometry)}) for _ in OG_network.links]
+    _network.nodes = {i: OG_network.nodes[i] for i in OG_network.nodes}
+    return _network
+
+
+def osm_net_simplify(OG_network: OSM_Network) -> Network:
     """
     simplify the network and remove all nodes with only 2 degrees
     :return:

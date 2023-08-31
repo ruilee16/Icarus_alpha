@@ -1,0 +1,192 @@
+{
+    "infrastructure": {
+        "epsg": 4326,
+        "units": "feet",
+        "osm_file": "/home/benjamin/Documents/icarus/data/source/openstreet/arizona-latest.osm.pbf",
+        "regions": {
+            "region_file": "/home/benjamin/Documents/icarus/data/source/maz_taz/maz_taz.shp"
+        },
+        "parcels": {
+            "residence_file": "/home/benjamin/Documents/icarus/data/source/parcels/residential_parcels.dbf",
+            "commerce_file": "/home/benjamin/Documents/icarus/data/source/parcels/commercial_parcels.dbf",
+            "parcel_file": "/home/benjamin/Documents/icarus/data/source/parcels/parcels.shp",
+            "type_file": "/home/benjamin/Documents/icarus/data/source/parcels/parcel_types.csv"
+        }
+    },
+    "parcels": {
+        "residential": ""
+    },
+    "temperature": {
+        "mrt_dir": "",
+        "tmax_file": "",
+        "tmin_file": ""
+    },
+
+    "activity_based_model": {
+        "trips_file": "/home/benjamin/Documents/icarus/data/source/abm/trips.csv.gz",
+        "households_file": "/home/benjamin/Documents/icarus/data/source/abm/households.csv.gz",
+        "persons_file": "/home/benjamin/Documents/icarus/data/source/abm/persons.csv.gz",
+        "modes": [
+            "bike",
+            "car",
+            "pt",
+            "walk"
+        ],
+        "activity_types": [
+            "home",
+            "shopping",
+            "other_maintenance",
+            "workplace",
+            "other_discretionary",
+            "school",
+            "other_escort",
+            "pure_escort",
+            "lunch",
+            "work_related",
+            "eating",
+            "visiting",
+            "breakfast",
+            "rideshare_escort",
+            "dinner",
+            "university",
+            "asu"
+        ],
+        "seed": null
+    },
+    "resources": {
+        "memory": "6000M",
+        "cores": 4
+    },
+    "simulation": {
+        "iterations": 10,
+        "sample": {
+            "sample_size": 4800000,
+            "sample_percent": 1.0,
+            "transit": null,
+            "vehicle": null,
+            "bike": null,
+            "walk": null,
+            "party": null
+        },
+        "transit": false,
+        "modes": {
+            "networked": [],
+            "routed": [
+                "bike",
+                "netwalk"
+            ],
+            "transit": [
+                "Bus",
+                "Tram"
+            ],
+            "teleported": [
+                "walk",
+                "default"
+            ],
+            "virtualized": [
+                "car",
+                "pt"
+            ]
+        }
+    },
+    "visualization": {
+        "charts": {
+            "leg_distributions_walk": {
+                "title": "Leg Durations (Walking)",
+                "type": "leg_distribution",
+                "parameter": "duration",
+                "axes": [
+                    "ABM leg duration (sec)",
+                    "MATSim leg duration (sec)"
+                ],
+                "bounds": null,
+                "sample": null,
+                "modes": [ "walk" ]
+            },
+            "leg_distributions_walk_trimmed": {
+                "title": "Leg Durations (Walking)",
+                "type": "leg_distribution",
+                "parameter": "duration",
+                "axes": [
+                    "ABM leg duration (sec)",
+                    "MATSim leg duration (sec)"
+                ],
+                "bounds": [ 0, 0, 2000, 2000 ],
+                "sample": null,
+                "modes": [ "walk" ]
+            },
+            "leg_differentials_walk": {
+                "title": "Leg Durations (Walking)",
+                "type": "leg_differential",
+                "parameter": "duration",
+                "axes": [
+                    "Difference in Simulated and ABM Leg Duration (sec)",
+                    "Frequency"
+                ],
+                "bounds": null,
+                "sample": null,
+                "modes": [ "walk" ]
+            },
+            "leg_differentials_walk_trimmed": {
+                "title": "Leg Durations (Walking)",
+                "type": "leg_differential",
+                "parameter": "duration",
+                "axes": [
+                    "Difference in Simulated and ABM Leg Duration (sec)",
+                    "Frequency"
+                ],
+                "bounds": [ -2000, 2000 ],
+                "sample": null,
+                "modes": [ "walk" ]
+            },
+            "leg_distributions_bike": {
+                "title": "Leg Durations (Biking)",
+                "type": "leg_distribution",
+                "parameter": "duration",
+                "axes": [
+                    "ABM leg duration (sec)",
+                    "MATSim leg duration (sec)"
+                ],
+                "bounds": null,
+                "sample": null,
+                "modes": [ "bike" ]
+            },
+            "leg_distributions_bike_trimmed": {
+                "title": "Leg Durations (Biking)",
+                "type": "leg_distribution",
+                "parameter": "duration",
+                "axes": [
+                    "ABM leg duration (sec)",
+                    "MATSim leg duration (sec)"
+                ],
+                "bounds": [ 0, 0, 1000, 1000 ],
+                "sample": null,
+                "modes": [ "bike" ]
+            },
+            "leg_differentials_bike": {
+                "title": "Leg Durations (Biking)",
+                "type": "leg_differential",
+                "parameter": "duration",
+                "axes": [
+                    "Difference in Simulated and ABM Leg Duration (sec)",
+                    "Frequency"
+                ],
+                "bounds": null,
+                "sample": null,
+                "modes": [ "bike" ]
+            },
+            "leg_differentials_bike_trimmed": {
+                "title": "Leg Durations (Biking)",
+                "type": "leg_differential",
+                "parameter": "duration",
+                "axes": [
+                    "Difference in Simulated and ABM Leg Duration (sec)",
+                    "Frequency"
+                ],
+                "bounds": [ -2000, 4000 ],
+                "sample": null,
+                "modes": [ "bike" ]
+            }
+        }
+    }
+}

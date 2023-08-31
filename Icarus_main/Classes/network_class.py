@@ -56,5 +56,7 @@ class Network:
     crs: int = dataclasses.field(default=4326)
     simplified: bool = dataclasses.field(default=False)
 
+    def __repr__(self):
+        return f"Icarus Network. Links number {len(self.links)}, nodes number {len(self.nodes)}. {'simplified' if self.simplified else 'not simplified'}"
 
 

@@ -1,11 +1,13 @@
 from Icarus_main.Classes.basic_class import IcarusObj, IcarusObjs
-from typing import Tuple
+from typing import Tuple, List
 import dataclasses
 
 
 @dataclasses.dataclass
 class Agent(IcarusObj):
     agent_id: int = dataclasses.field(default=None)
+    hhid: int = dataclasses.field(default=None)
+    pin: int = dataclasses.field(default=None)
     activities: dict = dataclasses.field(default=None)
     trips: dict = dataclasses.field(default=None)
     routed: bool = dataclasses.field(default=False)
@@ -51,3 +53,21 @@ class Trip(Event):
     __primary_key__ = ['agent_id', 'trip_id']
     __dict_key__ = 'trip_id'
 
+
+@dataclasses.dataclass
+class Route(IcarusObj):
+    agent_id: int = 0
+    trip_id: int = 0
+    mode: str = 'walk'
+    route: List[int] = dataclasses.field(default_factory=list)
+    abm_start: int = 0
+    duration: int = 0
+    length: float = 0.0
+    mrt_exp: float = 0.0
+    daymet_exp: float = 0.0
+    wbgt_exp: float = 0.0
+    reroute: int = 0
+    vulnerable: int = 0
+
+    def dict_id(self):
+        return self.trip_id

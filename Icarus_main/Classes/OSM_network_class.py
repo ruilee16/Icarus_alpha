@@ -99,8 +99,8 @@ class OSMHandler(osm.SimpleHandler):
                 highway_type=w.tags.get('highway'),
                 maxspeed=w.tags.get('maxspeed'),
                 pedestrian_allowed=w.tags.get('foot'),
-                service=w.tags.get('service'),
-                access_mode=w.tags.get('access'),
+                #service=w.tags.get('service'),
+                #access_mode=w.tags.get('access'),
                 hov=w.tags.get('hov'),
                 ref_node_id_list=[int(node.ref) for node in w.nodes])
             self.osm_way_dict[_way.osm_way_id] = _way
